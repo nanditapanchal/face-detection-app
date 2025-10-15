@@ -1,21 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import axiosInstance from '../utils/axiosInstance';
 import HistoryList from '../components/dashboard/HistoryList';
 
 export default function DashboardPage() {
   const [history, setHistory] = useState([]);
-
-  // Get the current user's ID from localStorage (or auth context)
   const userId = localStorage.getItem('userId');
 
   const fetchHistory = async () => {
     if (!userId) return;
     try {
-      const res = await axiosInstance.get(`/history/${userId}`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`,
-        },
-      });
+      const res = await axiosInstance.get(`/history/${userId}`);
       setHistory(res.data);
     } catch (err) {
       console.error('Failed to fetch history', err);
@@ -25,11 +19,7 @@ export default function DashboardPage() {
   const handleDelete = async (id) => {
     if (!userId) return;
     try {
-      await axiosInstance.delete(`/history/${userId}/${id}`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`,
-        },
-      });
+      await axiosInstance.delete(`/history/${userId}/${id}`);
       fetchHistory();
     } catch (err) {
       console.error('Failed to delete history', err);
@@ -40,5 +30,10 @@ export default function DashboardPage() {
     fetchHistory();
   }, []);
 
-  return <HistoryList history={history} onDelete={handleDelete} />;
+  return (
+    <div className="p-4">
+      <h2 className="text-2xl font-bold mb-4">Detection History</h2>
+      <HistoryList history={history} onDelete={handleDelete} />
+    </div>
+  );
 }

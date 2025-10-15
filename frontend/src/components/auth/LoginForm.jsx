@@ -28,12 +28,28 @@ export default function LoginForm() {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="max-w-md mx-auto bg-white p-6 rounded shadow">
-      <h2 className="text-2xl font-bold mb-4">Login</h2>
-      <input type="email" placeholder="Email" {...register('email')} className="border w-full p-2 mb-2" />
-      <p className="text-red-500">{errors.email?.message}</p>
-      <input type="password" placeholder="Password" {...register('password')} className="border w-full p-2 mb-2" />
-      <p className="text-red-500">{errors.password?.message}</p>
-      <button type="submit" className="bg-blue-600 text-white w-full py-2 mt-3">Login</button>
+      <input
+        type="email"
+        placeholder="Email"
+        {...register('email')}
+        className="border w-full p-2 mb-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
+      />
+      <p className="text-red-500 text-sm">{errors.email?.message}</p>
+
+      <input
+        type="password"
+        placeholder="Password"
+        {...register('password')}
+        className="border w-full p-2 mb-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
+      />
+      <p className="text-red-500 text-sm">{errors.password?.message}</p>
+
+      <button
+        type="submit"
+        className="bg-blue-600 text-white w-full py-2 mt-3 rounded hover:bg-blue-700 transition-colors"
+      >
+        Login
+      </button>
     </form>
   );
 }
