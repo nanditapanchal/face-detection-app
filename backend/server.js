@@ -20,7 +20,7 @@ app.use('/uploads', express.static(path.join(process.cwd(), UPLOAD_DIR)));
 
 // routes
 app.use('/api/auth', authRoutes);
-app.use('/api', faceRoutes);
+app.use('/api/facedetect', faceRoutes);
 
 // connect DB then start server
 const PORT = process.env.PORT || 5000;

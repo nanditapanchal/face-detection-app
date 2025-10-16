@@ -1,39 +1,23 @@
-import { useEffect, useState } from 'react';
-import axiosInstance from '../utils/axiosInstance';
-import HistoryList from '../components/dashboard/HistoryList';
+import React from "react";
+import { useAuth } from "../context/AuthContext";
+import HistoryList from "../components/dashboard/HistoryList";
 
-export default function DashboardPage() {
-  const [history, setHistory] = useState([]);
-  const userId = localStorage.getItem('userId');
-
-  const fetchHistory = async () => {
-    if (!userId) return;
-    try {
-      const res = await axiosInstance.get(`/history/${userId}`);
-      setHistory(res.data);
-    } catch (err) {
-      console.error('Failed to fetch history', err);
-    }
-  };
-
-  const handleDelete = async (id) => {
-    if (!userId) return;
-    try {
-      await axiosInstance.delete(`/history/${userId}/${id}`);
-      fetchHistory();
-    } catch (err) {
-      console.error('Failed to delete history', err);
-    }
-  };
-
-  useEffect(() => {
-    fetchHistory();
-  }, []);
+export default function Dashboard() {
+  const { user } = useAuth();
 
   return (
-    <div className="p-4">
-      <h2 className="text-2xl font-bold mb-4">Detection History</h2>
-      <HistoryList history={history} onDelete={handleDelete} />
+    <div className="p-6 min-h-screen bg-gray-100">
+      <h1 className="text-3xl font-bold mb-6 text-center text-gray-800">
+        Dashboard
+      </h1>
+
+      {user ? (
+        <HistoryList userId={user._id} />
+      ) : (
+        <p className="text-center text-gray-500 mt-4">
+          Please login to see your history.
+        </p>
+      )}
     </div>
   );
 }
